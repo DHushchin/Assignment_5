@@ -1,19 +1,15 @@
 #pragma once
 #include <iostream>
+#include <vector>
 using namespace std;
 
+template <class T>
 class Stack {
 private:
-    int* arr;
-    int capacity;
-    int size;
+    vector<T> elements;
 public:
-    Stack();
-    Stack(int size);
-    Stack(const Stack& other);
-    ~Stack();
-    void push(int x);
+    void push(T const&);
     void pop();
+    T top();
     bool empty();
-    int top();
 };

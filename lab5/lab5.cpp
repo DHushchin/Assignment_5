@@ -1,6 +1,6 @@
 ﻿#include <iostream>
 #include <vector>
-
+#include "Stack.hpp"
 using namespace std;
 
 
