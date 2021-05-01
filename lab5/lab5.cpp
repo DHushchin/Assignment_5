@@ -4,10 +4,30 @@
 using namespace std;
 
 
+enum class MathOperator {
+    plus, 
+    minus,
+    multiply, 
+    divide,
+    assign
+};
+
+enum class CompareOperator {
+    equal,
+    not_equal,
+    more,
+    more_or_equal,
+    less,
+    less_or_equal
+};
+
+
 enum class Type {
-    variable,
-    constant,
-    math_operator,
+    Variable,
+    Number,
+    MathOperator,
+    CompareOperator,
+    Bracket,
     UNDEFINED
 };
 
