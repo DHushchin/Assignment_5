@@ -1,8 +1,7 @@
 ﻿#include <iostream>
 #include <vector>
-#include "Stack.hpp"
+#include "Shunting-yard.hpp"
 using namespace std;
-
 
 enum class MathOperator {
     plus, 
@@ -20,7 +19,6 @@ enum class CompareOperator {
     less,
     less_or_equal
 };
-
 
 enum class Type {
     Variable,
@@ -45,8 +43,7 @@ public:
 
 
 
-int main() {
-    ASTNode root;
+int main(int argc, char* argv[]) {
     system("pause");
     return 0;
 }

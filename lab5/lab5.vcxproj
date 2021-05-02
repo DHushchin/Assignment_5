@@ -140,10 +140,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="lab5.cpp" />
-    <ClCompile Include="Stack.cpp" />
+    <ClCompile Include="Shunting-yard.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Stack.hpp" />
+    <ClInclude Include="Shunting-yard.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
