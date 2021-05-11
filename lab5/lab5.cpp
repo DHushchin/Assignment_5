@@ -43,16 +43,17 @@ public:
     ~ASTNode();
 };
 
-void InputData(vector<pair<string, double>> &variables);
+void InputData(vector<pair<string, double>> &variables, string& problem);
 
 int main(int argc, char* argv[]) {
     vector<pair<string, double>> variables;
-    InputData(variables);
+    string problem;
+    InputData(variables, problem);
     system("pause");
     return 0;
 }
 
-void InputData(vector<pair<string, double>> &variables)
+void InputData(vector<pair<string, double>> &variables, string& problem)
 {
     ifstream input;
     input.open("input.txt");
@@ -65,14 +66,22 @@ void InputData(vector<pair<string, double>> &variables)
     {
         string str;
         getline(input, str);
-        pair<string, double> curr;
-        string temp;
-        temp = str.substr(0, str.find('=') - 1);
-        curr.first = temp;
-        temp = str.substr(str.find('=')+2, str.size() - str.find('=') - 3);
-        curr.second = stof(temp);
-        variables.push_back(curr);
+        if (!(str.find('*') != -1 || str.find('-') != -1 || str.find('+') != -1 || str.find('^') != -1 || str.find('/') != -1))
+        {
+            pair<string, double> curr;
+            string temp;
+            temp = str.substr(0, str.find('=') - 1);
+            curr.first = temp;
+            temp = str.substr(str.find('=') + 2, str.size() - str.find('=') - 3);
+            curr.second = stof(temp);
+            variables.push_back(curr);
+        }
+        else
+        {
+            problem = str.substr(0, str.size()-1);
+        }
     }
+    input.close();
 }
 
 ASTNode::ASTNode()
