@@ -3,6 +3,8 @@
 #include <string>
 #include "Shunting-yard.hpp"
 #include <fstream>
+#include <map>
+#include <utility>
 using namespace std;
 
 enum class MathOperator {
@@ -43,17 +45,17 @@ public:
     ~ASTNode();
 };
 
-void InputData(vector<pair<string, double>> &variables, string& problem);
+void InputData(map<string, double>& variables, string& problem);
 
 int main(int argc, char* argv[]) {
-    vector<pair<string, double>> variables;
+    map<string, double> variables;
     string problem;
     InputData(variables, problem);
     system("pause");
     return 0;
 }
 
-void InputData(vector<pair<string, double>> &variables, string& problem)
+void InputData(map<string, double> &variables, string& problem)
 {
     ifstream input;
     input.open("input.txt");
@@ -74,15 +76,16 @@ void InputData(vector<pair<string, double>> &variables, string& problem)
             curr.first = temp;
             temp = str.substr(str.find('=') + 2, str.size() - str.find('=') - 3);
             curr.second = stof(temp);
-            variables.push_back(curr);
+            variables.insert(curr);
         }
         else
         {
-            problem = str.substr(0, str.size()-1);
+            problem = str.substr(0, str.size() - 1);
         }
     }
     input.close();
 }
+
 
 ASTNode::ASTNode()
 {
