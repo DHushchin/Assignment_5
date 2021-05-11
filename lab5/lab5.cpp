@@ -1,6 +1,8 @@
 ﻿#include <iostream>
 #include <vector>
+#include <string>
 #include "Shunting-yard.hpp"
+#include <fstream>
 using namespace std;
 
 enum class MathOperator {
@@ -41,14 +43,37 @@ public:
     ~ASTNode();
 };
 
-
+void InputData(vector<pair<string, double>> &variables);
 
 int main(int argc, char* argv[]) {
+    vector<pair<string, double>> variables;
+    InputData(variables);
     system("pause");
     return 0;
 }
 
-
+void InputData(vector<pair<string, double>> &variables)
+{
+    ifstream input;
+    input.open("input.txt");
+    if (!input.is_open())
+    {
+        cout << "File cannot be openned" << endl;
+        return;
+    }
+    while (!input.eof())
+    {
+        string str;
+        getline(input, str);
+        pair<string, double> curr;
+        string temp;
+        temp = str.substr(0, str.find('=') - 1);
+        curr.first = temp;
+        temp = str.substr(str.find('=')+2, str.size() - str.find('=') - 3);
+        curr.second = stof(temp);
+        variables.push_back(curr);
+    }
+}
 
 ASTNode::ASTNode()
 {
