@@ -33,60 +33,16 @@ enum class Type {
     UNDEFINED
 };
 
-class Node {
-    Node* root;
-    vector<Node*> children;
-    string data;
-    Type type;
-public:
-    Node();
-    void AddChild(string);
-    void PrintChildren();
-    ~Node();
-};
-
-Node::Node()
-{
-    root = nullptr;
-    root->type = Type::UNDEFINED;
-    root->data = "";
-}
-
-void Node::PrintChildren()
-{
-    Node* temp;
-    cout << "children: ";
-    for (size_t i = 0; i < children.size(); i++)
-    {
-        temp = children[i];
-        cout << *(temp).data << " ";
-    }
-}
-
-void Node::AddChild(string data)
-{
-    Node* newNode = new Node;
-    newNode->data = data;
-    this->children.push_back(newNode);
-}
-
-Node::~Node()
-{
-    for (size_t i = 0; i < children.size(); i++)
-    {
-        delete children[i];
-    }
-}
-
 class ASTNode {
 private:
     string data;
     Type type;
-    ASTNode* left;
-    ASTNode* right;
+    vector<ASTNode*> children;
 public:
     ASTNode();
-    ~ASTNode();
+    void AddChild(string data);
+    ASTNode* getNewNode(string data);
+    void PrintChildren(ASTNode node);
 };
 
 void InputData(map<string, double>& variables, string& problem);
@@ -94,11 +50,11 @@ void InputData(map<string, double>& variables, string& problem);
 int main(int argc, char* argv[]) {
     map<string, double> variables;
     string problem;
-    Node node;
+    ASTNode node;
     node.AddChild("+");
     node.AddChild("-");
     node.AddChild("/");
-    node.PrintChildren();
+    node.PrintChildren(node);
     InputData(variables, problem);
     system("pause");
     return 0;
@@ -140,12 +96,18 @@ ASTNode::ASTNode()
 {
     this->type = Type::UNDEFINED;
     this->data = "";
-    this->left = nullptr;
-    this->right = nullptr;
 }
 
-ASTNode::~ASTNode()
+void ASTNode::AddChild(string data)
 {
-    delete left;
-    delete right;
+    ASTNode* newNode = new ASTNode;
+    newNode->data = data;
+    children.push_back(newNode);
+}
+
+
+void ASTNode::PrintChildren(ASTNode node) {
+    for (int i = 0; i < node.children.size(); i++) {
+        cout << "   " << node.children[i]->data;
+    }
 }
