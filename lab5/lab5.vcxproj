@@ -140,9 +140,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="lab5.cpp" />
+    <ClCompile Include="Node.cpp" />
     <ClCompile Include="Shunting-yard.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Header.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="Shunting-yard.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

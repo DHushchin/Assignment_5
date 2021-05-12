@@ -75,12 +75,28 @@ bool Stack<T>::isFull() {
 }
 
 
-void ShuntingYard(int argc, char* argv[])
+void ShuntingYard(string problem)
 {
     Stack<string> operationsStack;//stack with operations +-/*
     string polishNotation = " ";//polish notation version of string
     //1+2+ 3 +4 + 5
-    for (int i = 1; i < argc; i++) {
+    int argc = 0;
+    int start = 0;
+    vector<string> argv;
+    while (problem.size() != 0)
+    {
+        if (problem.find(' ') == -1)
+        {
+            argv.push_back(problem.substr(0, problem.size()));
+            problem.erase(0, problem.size());
+        }
+        else
+        {
+            argv.push_back(problem.substr(0, ' '));
+            problem.erase(0, problem.find(' ') + 1);
+        }
+    }
+    for (int i = 0; i < argv.size(); i++) {
         string str = argv[i];
         size_t index = 0;
         while ((index = str.find(' ')) != string::npos) str.erase(index, 1);
@@ -155,8 +171,8 @@ void ShuntingYard(int argc, char* argv[])
     }
     cout << "Reverse polish notation: " << polishNotation.substr(1);
 
-    float result;
-    int start = 0;
+    /*float result;
+    start = 0;
     float num1, num2;
     int operationIndex = findOperator(polishNotation, start);
     while (operationIndex > 0)
@@ -178,7 +194,7 @@ void ShuntingYard(int argc, char* argv[])
             polishNotation[i] = '-';
         }
     }
-    cout << endl << "Result: " << fixed << setprecision(3) << stof(polishNotation);
+    cout << endl << "Result: " << fixed << setprecision(3) << stof(polishNotation);*/
 }
 
 

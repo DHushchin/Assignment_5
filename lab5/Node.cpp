@@ -1,8 +1,6 @@
 #include "Node.h"
 Node::Node()
 {
-    //children.resize(1);
-    //children[0] = nullptr;
 }
 
 vector<Node*> Node::GetChildren()

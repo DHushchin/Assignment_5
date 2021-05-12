@@ -3,12 +3,13 @@
 #include <algorithm>
 #include <iomanip>
 #include <cmath>
+#include <vector>
 
 const int SIZE = 1;
 
 using namespace std;
 
-void ShuntingYard(int argc, char* argv[]);
+void ShuntingYard(string problem);
 
 int findOperator(string, int);
 int findOperatorRight(string);
