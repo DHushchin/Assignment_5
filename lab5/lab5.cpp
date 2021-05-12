@@ -1,95 +1,5 @@
-﻿#include <iostream>
-#include <vector>
-#include <string>
-#include "Shunting-yard.hpp"
-#include <fstream>
-#include <map>
-#include <utility>
-using namespace std;
-
-enum class MathOperator {
-    plus, 
-    minus,
-    multiply, 
-    divide,
-    assign
-};
-
-enum class CompareOperator {
-    equal,
-    not_equal,
-    more,
-    more_or_equal,
-    less,
-    less_or_equal
-};
-
-enum class Type {
-    Variable,
-    Number,
-    MathOperator,
-    CompareOperator,
-    Bracket,
-    UNDEFINED
-};
-
-class Node {
-    Node* root;
-    vector<Node*> children;
-    string data;
-    Type type;
-public:
-    Node();
-    void AddChild(string);
-    void PrintChildren();
-    ~Node();
-};
-
-Node::Node()
-{
-    root = nullptr;
-    root->type = Type::UNDEFINED;
-    root->data = "";
-}
-
-void Node::PrintChildren()
-{
-    Node* temp;
-    cout << "children: ";
-    for (size_t i = 0; i < children.size(); i++)
-    {
-        temp = children[i];
-        cout << *(temp).data << " ";
-    }
-}
-
-void Node::AddChild(string data)
-{
-    Node* newNode = new Node;
-    newNode->data = data;
-    this->children.push_back(newNode);
-}
-
-Node::~Node()
-{
-    for (size_t i = 0; i < children.size(); i++)
-    {
-        delete children[i];
-    }
-}
-
-class ASTNode {
-private:
-    string data;
-    Type type;
-    ASTNode* left;
-    ASTNode* right;
-public:
-    ASTNode();
-    ~ASTNode();
-};
-
-void InputData(map<string, double>& variables, string& problem);
+﻿#include "Header.h"
+#include "Node.h"
 
 int main(int argc, char* argv[]) {
     map<string, double> variables;
@@ -98,11 +8,17 @@ int main(int argc, char* argv[]) {
     node.AddChild("+");
     node.AddChild("-");
     node.AddChild("/");
-    node.PrintChildren();
+    vector<Node*> temp;
+    temp = node.GetChildren();
+    temp[0]->AddChild("1");
+    temp[0]->AddChild("2");
+    temp[0]->PrintChildren();
     InputData(variables, problem);
     system("pause");
     return 0;
 }
+
+void BuildTree()
 
 void InputData(map<string, double> &variables, string& problem)
 {
@@ -133,19 +49,4 @@ void InputData(map<string, double> &variables, string& problem)
         }
     }
     input.close();
-}
-
-
-ASTNode::ASTNode()
-{
-    this->type = Type::UNDEFINED;
-    this->data = "";
-    this->left = nullptr;
-    this->right = nullptr;
-}
-
-ASTNode::~ASTNode()
-{
-    delete left;
-    delete right;
 }
