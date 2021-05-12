@@ -33,6 +33,50 @@ enum class Type {
     UNDEFINED
 };
 
+class Node {
+    Node* root;
+    vector<Node*> children;
+    string data;
+    Type type;
+public:
+    Node();
+    void AddChild(string);
+    void PrintChildren();
+    ~Node();
+};
+
+Node::Node()
+{
+    root = nullptr;
+    root->type = Type::UNDEFINED;
+    root->data = "";
+}
+
+void Node::PrintChildren()
+{
+    Node* temp;
+    cout << "children: ";
+    for (size_t i = 0; i < children.size(); i++)
+    {
+        temp = children[i];
+        cout << *(temp).data << " ";
+    }
+}
+
+void Node::AddChild(string data)
+{
+    Node* newNode = new Node;
+    newNode->data = data;
+    this->children.push_back(newNode);
+}
+
+Node::~Node()
+{
+    for (size_t i = 0; i < children.size(); i++)
+    {
+        delete children[i];
+    }
+}
 
 class ASTNode {
 private:
@@ -50,6 +94,11 @@ void InputData(map<string, double>& variables, string& problem);
 int main(int argc, char* argv[]) {
     map<string, double> variables;
     string problem;
+    Node node;
+    node.AddChild("+");
+    node.AddChild("-");
+    node.AddChild("/");
+    node.PrintChildren();
     InputData(variables, problem);
     system("pause");
     return 0;
