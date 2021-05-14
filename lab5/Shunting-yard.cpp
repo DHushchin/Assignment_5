@@ -1,8 +1,6 @@
 #pragma once
 #include "Shunting-yard.hpp"
 
-using namespace std;
-
 
 template <typename T>
 Stack<T>::Stack(int size)
@@ -75,7 +73,7 @@ bool Stack<T>::isFull() {
 }
 
 
-void ShuntingYard(string problem)
+stack<string> ShuntingYard(string problem)
 {
     Stack<string> operationsStack;//stack with operations +-/*
     string polishNotation = " ";//polish notation version of string
@@ -169,8 +167,25 @@ void ShuntingYard(string problem)
     for (int i = 0; i < operationsStack.size();) {
         polishNotation = polishNotation + operationsStack.pop() + ' ';
     }
-    cout << "Reverse polish notation: " << polishNotation.substr(1);
+    stack<string> result;
+    while (!polishNotation.empty())
+    {
+        if (polishNotation.substr(0, polishNotation.find(' ')) == "")
+        {
+            polishNotation.erase(0, polishNotation.find(' ') + 1);
+        }
+        else if (polishNotation.substr(0, polishNotation.find(' ')) != " ")
+        {
+            result.push(polishNotation.substr(0, polishNotation.find(' ')));
+            polishNotation.erase(0, polishNotation.find(' ') + 1);
+        }
 
+        else
+        {
+            polishNotation.erase((0, polishNotation.find(' ')));
+        }
+    }
+    return result;
     /*float result;
     start = 0;
     float num1, num2;

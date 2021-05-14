@@ -5,6 +5,7 @@ int main(int argc, char* argv[]) {
     vector<pair<string, double>> variables;
     string problem;
     InputData(variables, problem);
+    stack<string> rrpn = ShuntingYard(problem);
     BuildTree(variables, problem);
     system("pause");
     return 0;
@@ -23,37 +24,9 @@ void BuildTree(vector<pair<string, double>>& variables, string problem)
         str = variables[i].second;
         temp[i]->AddChild(str);
     }
-    vector<pair<int, vector<int>>> data = Data(problem);
+    
 }
 
-vector<pair<int, vector<int>>> Data(string problem)
-{
-    // ^ () *,/, +,-
-    vector<pair<int, vector<int>>> data;
-    CountOperations(data, problem, '^');
-    CountOperations(data, problem, '(');
-    CountOperations(data, problem, ')');
-    CountOperations(data, problem, '*');
-    CountOperations(data, problem, '/');
-    CountOperations(data, problem, '+');
-    CountOperations(data, problem, '-');
-    return data;
-}
-
-void CountOperations(vector<pair<int, vector<int>>> &data, string problem, char a)
-{
-    pair<int, vector<int>> temp;
-    int start = 0;
-    int counter = 0;
-    while (start != -1)
-    {
-        start = problem.find(a, start);
-        temp.second.push_back(start);
-        counter++;
-    }
-    temp.first = counter;
-    data.push_back(temp);
-}
 
 void InputData(vector<pair<string, double>>& variables, string& problem)
 {

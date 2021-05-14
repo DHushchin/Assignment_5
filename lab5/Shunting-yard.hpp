@@ -4,12 +4,12 @@
 #include <iomanip>
 #include <cmath>
 #include <vector>
-
+#include <stack>
 const int SIZE = 1;
 
 using namespace std;
 
-void ShuntingYard(string problem);
+stack<string> ShuntingYard(string problem);
 
 int findOperator(string, int);
 int findOperatorRight(string);
