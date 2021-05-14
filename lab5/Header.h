@@ -6,9 +6,10 @@
 #include <fstream>
 #include <map>
 #include <utility>
+
 using namespace std;
 void InputData(vector<pair<string, double>>& variables, string& problem);
-void BuildTree(vector<pair<string, double>>& variables, string problem);
+
 enum class MathOperator {
     plus,
     minus,
