@@ -32,6 +32,5 @@ enum class Type {
     Number,
     MathOperator,
     CompareOperator,
-    Bracket,
     UNDEFINED
 };

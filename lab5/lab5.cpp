@@ -2,7 +2,9 @@
 #include "Node.h"
 
 void BuildTree(Node*, vector<pair<string, double>>&, stack<string>);
-void ShowTree(Node* root, int level);
+float Evaluation(Node* ast, Node* root);
+Type gettype(string str);
+double GetVariable(Node* root, string name);
 
 int main(int argc, char* argv[]) {
     vector<pair<string, double>> variables;
@@ -11,7 +13,11 @@ int main(int argc, char* argv[]) {
     stack<string> rrpn = ShuntingYard(problem);
     Node tree;
     BuildTree(&tree, variables, rrpn);
-
+    vector<Node*> temp;
+    temp = tree.GetChildren();
+    Node* root = temp[variables.size()];
+    double result = Evaluation(&tree, root);
+    cout << result;
     system("pause");
     return 0;
 }
@@ -81,20 +87,60 @@ void BuildTree(Node* tree, vector<pair<string, double>>& variables, stack<string
     }
 }
 
-void ShowTree(Node* root, int level)
+double GetVariable(Node* ast, string name)
 {
-    vector<Node*> temp;
-    if (root)
+    vector<Node*> temp = ast->GetChildren();
+    for (size_t i = 0; i < temp.size()-1; i++)
     {
-        temp = root->GetChildren();
-        if (!temp.empty())
+        if (temp[i]->GetData() == "=")
         {
-            ShowTree(temp[0], level + 1);
-            for (int i = 0; i < level; i++) cout << "   ";
-            cout << root->GetData() << endl;
+            
+            if (temp[i]->GetChildren()[0]->GetData() == name)
+            {
+                return stof(temp[i]->GetChildren()[1]->GetData());
+            }
         }
-        ShowTree(temp[1], level + 1);
     }
+}
+
+float Evaluation(Node* ast, Node* root)
+{
+    string s = root->GetData();
+
+    if (gettype(s) == Type::Number)
+    {
+        return stof(s);
+    }
+    else if (gettype(s) == Type::Variable)
+    {
+        return GetVariable(ast, s);
+    }
+    else
+    {
+        Node* left = (root->GetChildren())[0];
+        Node* right = (root->GetChildren())[1];
+        float op1 = Evaluation(ast, left);
+        float op2 = Evaluation(ast, right);
+
+        if (s == "+") { return op1 + op2; }
+        else if (s == "-") { return op1 - op2; }
+        else if (s == "*") { return op1 * op2; }
+        else if (s == "/") { return op1 / op2; }
+    }
+}
+
+Type gettype(string str) {
+    if (str == "+" || str == "-" || str == "*" || str == "/")
+        return Type::MathOperator;
+    if (str[0] >= 48 && str[str.size() - 1] <= 57)
+    {
+        return Type::Number;
+    }
+    if (str[0] >= 41 && str[str.size() - 1] <= 122)
+    {
+        return Type::Variable;
+    }
+    return Type::UNDEFINED;
 }
 
 void InputData(vector<pair<string, double>>& variables, string& problem)
