@@ -45,6 +45,11 @@ void BuildTree(Node* tree, vector<pair<string, double>>& variables, stack<string
 
         if (temp.size() == 2 /*&& !secondtemp.empty()*/)
         {
+            if (temp[1]->GetType() == Type::MathOperator)
+            {
+                start = temp[1];
+                continue;
+            }
             start = start->GetParent();
             if (start->GetType() == Type::UNDEFINED)
             {
