@@ -118,8 +118,8 @@ float Evaluation(Node* ast, Node* root)
     else
     {
         Node* left = (root->GetChildren())[0];
-        Node* right = (root->GetChildren())[1];
         float op1 = Evaluation(ast, left);
+        Node* right = (root->GetChildren())[1];
         float op2 = Evaluation(ast, right);
 
         if (s == "+") { return op1 + op2; }
