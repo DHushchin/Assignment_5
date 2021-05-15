@@ -17,7 +17,8 @@ int main(int argc, char* argv[]) {
     temp = tree.GetChildren();
     Node* root = temp[variables.size()];
     double result = Evaluation(&tree, root);
-    cout << result;
+    cout << "problem: " << problem << endl;
+    cout << "result = " << result << endl;
     system("pause");
     return 0;
 }
@@ -71,7 +72,7 @@ void BuildTree(Node* tree, vector<pair<string, double>>& variables, stack<string
                 start->AddChild(rrpn.top());
                 rrpn.pop();
             }
-            else //(temp[0]->GetType() == Type::Variable || temp[0]->GetType() == Type::Number)
+            else
             {
                 start->AddChild(rrpn.top());
                 rrpn.pop();
@@ -97,7 +98,7 @@ double GetVariable(Node* ast, string name)
             
             if (temp[i]->GetChildren()[0]->GetData() == name)
             {
-                return stof(temp[i]->GetChildren()[1]->GetData());
+                return stod(temp[i]->GetChildren()[1]->GetData());
             }
         }
     }
@@ -109,7 +110,7 @@ float Evaluation(Node* ast, Node* root)
 
     if (gettype(s) == Type::Number)
     {
-        return stof(s);
+        return stod(s);
     }
     else if (gettype(s) == Type::Variable)
     {
@@ -123,9 +124,9 @@ float Evaluation(Node* ast, Node* root)
         float op2 = Evaluation(ast, right);
 
         if (s == "+") { return op1 + op2; }
-        else if (s == "-") { return op1 - op2; }
+        else if (s == "-") { return op2 - op1; }
         else if (s == "*") { return op1 * op2; }
-        else if (s == "/") { return op1 / op2; }
+        else if (s == "/") { return op2 / op1; }
     }
 }
 
@@ -136,7 +137,7 @@ Type gettype(string str) {
     {
         return Type::Number;
     }
-    if (str[0] >= 41 && str[str.size() - 1] <= 122)
+    if (str[0] >= 65 && str[str.size() - 1] <= 122)
     {
         return Type::Variable;
     }
