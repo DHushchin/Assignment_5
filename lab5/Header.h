@@ -8,7 +8,7 @@
 #include <utility>
 
 using namespace std;
-void InputData(vector<pair<string, double>>& variables, string& problem);
+void InputData(vector<pair<string, double>>& variables, string& problem, stack<string>& ternary);
 
 enum class MathOperator {
     plus,
@@ -28,6 +28,7 @@ enum class CompareOperator {
 };
 
 enum class Type {
+    Ternary,
     Variable,
     Number,
     MathOperator,

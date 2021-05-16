@@ -35,6 +35,11 @@ void Node::SetType(Type type)
     this->type = type;
 }
 
+void Node::SetData(string value)
+{
+    data = value;
+}
+
 void Node::AddChild(string data)
 {
     Node* newNode = new Node;

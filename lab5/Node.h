@@ -17,6 +17,7 @@ public:
     void PrintChildren();
     string GetData();
     Node* GetParent();
+    void SetData(string value);
     void SetType(Type type);
     ~Node();
 };
