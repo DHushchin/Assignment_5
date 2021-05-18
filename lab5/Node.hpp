@@ -1,5 +1,17 @@
 #pragma once
-#include "Header.h"
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+enum class Type {
+    Variable,
+    Number,
+    MathOperator,
+    UNDEFINED
+};
+
 class Node
 {
     vector<Node*> children;
@@ -9,16 +21,13 @@ class Node
 public:
     Node();
     vector<Node*> GetChildren();
-    Type GetType()
-    {
-        return type;
-    }
     void AddChild(string);
     void PrintChildren();
     string GetData();
     Node* GetParent();
     void SetData(string value);
     void SetType(Type type);
+    Type GetType();
     ~Node();
 };
 

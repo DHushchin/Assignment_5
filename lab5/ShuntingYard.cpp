@@ -1,5 +1,5 @@
 #pragma once
-#include "Shunting-yard.hpp"
+#include "ShuntingYard.hpp"
 
 
 template <typename T>
@@ -67,17 +67,21 @@ bool Stack<T>::isEmpty() {
     return top == -1;
 }
 
+
 template <typename T>
 bool Stack<T>::isFull() {
     return top == _size - 1;
 }
 
 
-stack<string> ShuntingYard(string problem)
+ShuntingYard::ShuntingYard() {
+
+}
+
+
+ShuntingYard::ShuntingYard(string problem)
 {
-    Stack<string> operationsStack;//stack with operations +-/*
-    string polishNotation = " ";//polish notation version of string
-    //1+2+ 3 +4 + 5
+    polishNotation = " ";
     int argc = 0;
     int start = 0;
     vector<string> argv;
@@ -99,121 +103,75 @@ stack<string> ShuntingYard(string problem)
         size_t index = 0;
         while ((index = str.find(' ')) != string::npos) str.erase(index, 1);
         for (int i = 0; i < str.length(); i++) {
-            if (str[i] == '-' && i == 0) {
+            if (str[i] == '-' && i == 0) 
                 str[i] = 'm';
-            }
-            else if (str[i] == '-' && i != 0) {
-                if (str[i - 1] == '(' || str[i - 1] == '*' || str[i - 1] == '/') {
+            else if (str[i] == '-' && i != 0) 
+                if (str[i - 1] == '(' || str[i - 1] == '*' || str[i - 1] == '/') 
                     str[i] = 'm';
-                }
-            }
         }
 
         if (str.length() == 1) {
-            if (isdigit(str[0])) {
+            if (isdigit(str[0]))
                 polishNotation = polishNotation + str + ' ';
-            }
             else
-                polishNotation = pushOperator(str, polishNotation, &operationsStack, 0);/////push               
+                polishNotation = pushOperator(str, polishNotation, 0);/////push             
         }
-        else {
+        else 
+        {
             int start = 0;
             int operationIndex = findOperator(str, start);
             if (operationIndex < 0) polishNotation = polishNotation + str + ' '; // 22
             else {
                 while (operationIndex >= 0) {
-
-
                     if (operationIndex == str.length() - 1)
                     {
                         polishNotation = polishNotation + str.substr(start, operationIndex - start) + ' ';
-
-
-                        polishNotation = pushOperator(str, polishNotation, &operationsStack, operationIndex);/////push
-
+                        polishNotation = pushOperator(str, polishNotation, operationIndex);/////push
                         operationIndex = -1;
                     }
                     else if (operationIndex == 0) {
-
-
-                        polishNotation = pushOperator(str, polishNotation, &operationsStack, operationIndex);/////push
-
+                        polishNotation = pushOperator(str, polishNotation, operationIndex);/////push
                         start = operationIndex + 1;
                         operationIndex = findOperator(str, start);
-                        if (operationIndex == -1) {
-                            polishNotation = polishNotation + str.substr(start) + ' ';
-                        }
+                        if (operationIndex == -1) 
+                            polishNotation = polishNotation + str.substr(start) + ' ';                       
                     }
-                    else {
-                        if (!(str.substr(start, operationIndex - start)).empty()) {
-                            polishNotation = polishNotation + str.substr(start, operationIndex - start) + ' ';
-                        }
-
-
-                        polishNotation = pushOperator(str, polishNotation, &operationsStack, operationIndex);/////push
-
+                    else 
+                    {
+                        if (!(str.substr(start, operationIndex - start)).empty()) 
+                            polishNotation = polishNotation + str.substr(start, operationIndex - start) + ' ';                       
+                        polishNotation = pushOperator(str, polishNotation, operationIndex);/////push
                         start = operationIndex + 1;
                         operationIndex = findOperator(str, start);
                         if (operationIndex < 0) {
-                            operationIndex = findOperatorRight(str);//12+34-7*2 12+34-7* ##+3
+                            operationIndex = findOperatorRight(str);
                             polishNotation = polishNotation + str.substr(operationIndex + 1) + ' ';
                             operationIndex = -1;
                         }
                     }
                 }
-            }                            // 12+34-7*2; +22-4; +22-; 12+
+            }                            
         }
     }
-    for (int i = 0; i < operationsStack.size();) {
+    for (int i = 0; i < operationsStack.size();) 
         polishNotation = polishNotation + operationsStack.pop() + ' ';
-    }
-    stack<string> result;
+
     while (!polishNotation.empty())
     {
         if (polishNotation.substr(0, polishNotation.find(' ')) == "")
-        {
             polishNotation.erase(0, polishNotation.find(' ') + 1);
-        }
         else if (polishNotation.substr(0, polishNotation.find(' ')) != " ")
         {
             result.push(polishNotation.substr(0, polishNotation.find(' ')));
             polishNotation.erase(0, polishNotation.find(' ') + 1);
         }
-
         else
-        {
             polishNotation.erase((0, polishNotation.find(' ')));
-        }
     }
-    return result;
-    /*float result;
-    start = 0;
-    float num1, num2;
-    int operationIndex = findOperator(polishNotation, start);
-    while (operationIndex > 0)
-    {
-        int numberIndex = skipSpaces(polishNotation, operationIndex);
-        num1 = getFirstNumber(polishNotation, numberIndex);
-        num2 = getSecondNumber(polishNotation, numberIndex);
-        result = doCalculation(num1, num2, polishNotation.substr(operationIndex, 1));
-        string resultStr = to_string(result);
-        if (resultStr[0] == '-') {
-            resultStr[0] = 'm';
-        }
-        polishNotation = polishNotation.replace(numberIndex, operationIndex + 1 - numberIndex, resultStr);
-        operationIndex = findOperator(polishNotation, start);
-    }
-    for (int i = 0; i < polishNotation.length() / 2; i++)
-    {
-        if (polishNotation[i] == 'm') {
-            polishNotation[i] = '-';
-        }
-    }
-    cout << endl << "Result: " << fixed << setprecision(3) << stof(polishNotation);*/
 }
 
 
-int findOperator(string str, int start) {
+int ShuntingYard::findOperator(string str, int start) {
     int operationIndex1 = str.find('+', start);
     int operationIndex2 = str.find('-', start);
     int operationIndex3 = str.find('*', start);
@@ -233,7 +191,8 @@ int findOperator(string str, int start) {
     return -1;
 }
 
-int findOperatorRight(string str) {
+
+int ShuntingYard::findOperatorRight(string str) {
     int operationIndex1 = str.rfind('+');
     int operationIndex2 = str.rfind('-');
     int operationIndex3 = str.rfind('*');
@@ -244,7 +203,8 @@ int findOperatorRight(string str) {
     return max(operationIndex7, max(operationIndex6, max(operationIndex5, max(operationIndex4, (max(operationIndex3, (max(operationIndex1, operationIndex2))))))));
 }
 
-int priorityOfOperation(string operation)
+
+int ShuntingYard::priorityOfOperation(string operation)
 {
     switch (operation[0])
     {
@@ -266,61 +226,63 @@ int priorityOfOperation(string operation)
     }
 }
 
-string pushOperator(string example, string postfix, Stack<string>* operationsStack, int index)
+
+string ShuntingYard::pushOperator(string example, string postfix, int index)
 {
     string operationString = example.substr(index, 1);
-    if ((*operationsStack).isEmpty())
-        (*operationsStack).push(operationString);
+    if (operationsStack.isEmpty())
+        operationsStack.push(operationString);
     else
     {
-        if (operationString[0] == '(') {
-            (*operationsStack).push(operationString);
-        }
+        if (operationString[0] == '(') 
+            operationsStack.push(operationString);
         else if (operationString[0] == ')') {
-
-            while ((*operationsStack).back() != "(") {
-                postfix = postfix + (*operationsStack).pop() + ' ';
-            }
-            (*operationsStack).pop();
+            while (operationsStack.back() != "(") 
+                postfix = postfix + operationsStack.pop() + ' ';
+            operationsStack.pop();
         }
-        else if (priorityOfOperation(((*operationsStack).back())) >= priorityOfOperation(operationString))
+        else if (priorityOfOperation(operationsStack.back()) >= priorityOfOperation(operationString))
         {
-            postfix = postfix + (*operationsStack).pop() + ' ';
-            (*operationsStack).push(operationString);
+            postfix = postfix + operationsStack.pop() + ' ';
+            operationsStack.push(operationString);
         }
         else
-            (*operationsStack).push(operationString);
+            operationsStack.push(operationString);
     }
     return postfix;
 }
 
-float getFirstNumber(string polishNotation, int operationIndex) {
+
+double ShuntingYard::getFirstNumber(int operationIndex) {
     int end = polishNotation.find(' ', operationIndex);
-    float number;
+    double number;
     if (polishNotation.substr(operationIndex, end - operationIndex)[0] == 'm') {
-        number = stof(polishNotation.substr(operationIndex + 1, end - operationIndex - 1)) * (-1);
+        number = stod(polishNotation.substr(operationIndex + 1, end - operationIndex - 1)) * (-1);
     }
     else {
-        number = stof(polishNotation.substr(operationIndex, end - operationIndex));
+        number = stod(polishNotation.substr(operationIndex, end - operationIndex));
     }
 
     return number;
 }
-float getSecondNumber(string polishNotation, int operationIndex) {
+
+
+double ShuntingYard::getSecondNumber(int operationIndex) {
     int start = polishNotation.find(' ', operationIndex) + 1;
     int end = polishNotation.find(' ', start);
-    float number;
+    double number;
     if (polishNotation.substr(start, end - start)[0] == 'm') {
-        number = stof(polishNotation.substr(start + 1, end - start - 1)) * (-1);
+        number = stod(polishNotation.substr(start + 1, end - start - 1)) * (-1);
     }
     else {
-        number = stof(polishNotation.substr(start, end - start));
+        number = stod(polishNotation.substr(start, end - start));
     }
 
     return number;
 }
 
-int skipSpaces(string polishNotation, int operationIndex) {
+
+int ShuntingYard::skipSpaces(int operationIndex) {
     for (int i = 0; i < 3; i++) {
         operationIndex = polishNotation.rfind(' ', operationIndex) - 1;
     }
@@ -328,7 +290,8 @@ int skipSpaces(string polishNotation, int operationIndex) {
     return operationIndex;
 }
 
-float doCalculation(float firstNum, float secondNum, string operation)
+
+double ShuntingYard::doCalculation(float firstNum, float secondNum, string operation)
 {
     switch (operation[0])
     {
@@ -345,4 +308,9 @@ float doCalculation(float firstNum, float secondNum, string operation)
     default:
         return -1;
     }
+}
+
+
+stack<string> ShuntingYard::getResult() {
+    return result;
 }
