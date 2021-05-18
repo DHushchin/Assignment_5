@@ -159,14 +159,10 @@ void Tree::SetVariable(string name, double value)
 
 double Tree::GetVariable(string name)
 {
-    double res;
     vector<Node*> temp = tree.GetChildren();
     for (size_t i = 0; i < temp.size() - 1; i++)
-        if (temp[i]->GetData() == "=" && temp[i]->GetChildren()[0]->GetData() == name) {
-            res = stod(temp[i]->GetChildren()[1]->GetData());
-            break;
-        }
-    return res;
+        if (temp[i]->GetData() == "=" && temp[i]->GetChildren()[0]->GetData() == name) 
+            return stod(temp[i]->GetChildren()[1]->GetData());
 }
 
 
